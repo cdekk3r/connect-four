@@ -6,7 +6,7 @@ table {
   background-color: blue;
   width: 500px;
   height: 400px;
-  margin:10px auto;
+  margin: 50px auto;
 }
 
 h1 {
@@ -17,6 +17,10 @@ h1 {
 
 td {
   background: white;
-  border-radius: 100%;
-  border: 5px solid blue;
+  border-radius: 50%;
+  border: 6px solid blue;
+}
+
+#row-1 {
+  background: red;
 }
