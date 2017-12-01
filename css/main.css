@@ -21,6 +21,6 @@ td {
   border: 6px solid blue;
 }
 
-td:hover {
+#board tr:first-child td:hover {
     background-color: #b1d3b2;
 }
