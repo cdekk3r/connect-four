@@ -1,16 +1,13 @@
 /* global $ */
 
 var player1 = true;
-var count = 1;
-var lastSlot = 0;
-var temp = 0;
 var table = [[0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0],
              [0,0,0,0,0,0,0]];
-
+             
 $('[data-column]').on('click', function() { 
     
     var columnNum = $(this).attr('data-column');
@@ -24,11 +21,9 @@ $('[data-column]').on('click', function() {
         
             if(player1) {
                 $(atRow).css('background-color', 'black');
-                $(atRow).attr('data-player', '1');
                 table[rowNum-1][columnNum-1] = 1;
             } else {
                 $(atRow).css('background-color', 'red');
-                $(atRow).attr('data-player', '2');
                 table[rowNum-1][columnNum-1] = 2;
             }
             
@@ -38,11 +33,14 @@ $('[data-column]').on('click', function() {
             continue;
         }
     } 
-    checkHorizontalWin();
-    checkVerticalWin();
-    checkDiagonalWin();
+    checkWin();
 });
 
+var checkWin = function() {
+    if (checkDiagonalWin() || checkVerticalWin() || checkHorizontalWin()) {
+        alert("Win");
+    }
+}
 
 var checkDiagonalWin = function() {
     // from bottom left up
@@ -51,7 +49,7 @@ var checkDiagonalWin = function() {
             var player = player1 ? 2 : 1;
             
             if (table[y][x] == player && table[y-1][x+1] == player && table[y-2][x+2] == player && table[y-3][x+3] == player) {
-                alert("Win");
+                return true;
             }
         };
     };
@@ -62,7 +60,7 @@ var checkDiagonalWin = function() {
             var player = player1 ? 2 : 1;
             
             if (table[y][x] == player && table[y+1][x+1] == player && table[y+2][x+2] == player && table[y+3][x+3] == player) {
-                alert("Win");
+                return true;
             }
         };
     };
@@ -71,70 +69,43 @@ var checkDiagonalWin = function() {
 
 var checkHorizontalWin = function() {
     
-    for (var y = 6; y >= 1; y--) {
-        var row = $('[data-row="' + y + '"]').toArray();
-    
-        for(var x = 1; x <= row.length-1; x++) {
-            var col = $('[data-column="' + x + '"][data-row="' + y + '"]');
-            var player = $(col).attr('data-player');
+    for (var y = 5; y >= 0; y--) {
+        for(var x = 0; x <= 3; x++) {
+            var player = player1 ? 2 : 1;
             
-            if (player == 1) {
-                temp = 1;
-            } else if (player ==2) {
-                temp = 2;
-            } else {
-                temp = 0;
+            if (table[y][x] == player && table[y][x+1] == player && table[y][x+2] == player && table[y][x+3] == player) {
+                return true;
             }
-            
-            if (player == lastSlot) {
-                count++
-                if (count == 4) break;
-            } else {
-                count = 1;
-            }
-            
-            lastSlot = temp;
-        }
-        
-        
-        if (count == 4) {
-            alert("Win");
         }
     };
 };
 
 var checkVerticalWin = function() {
     
-    for (var x = 1; x <= 7; x++) {
-        var column = $('[data-column="' + x + '"]').toArray();
-        
-    
-        for(var y = 6; y >= 1; y--) {
-            var row = $('[data-row="' + y + '"][data-column="' + x + '"]');
-            var player = $(row).attr('data-player');
+    for (var y = 5; y >= 3; y--) {
+        for(var x = 0; x <= 6; x++) {
+            var player = player1 ? 2 : 1;
             
-            if (player == 1) {
-                temp = 1;
-            } else if (player ==2) {
-                temp = 2;
-            } else {
-                temp = 0;
+            if (table[y][x] == player && table[y-1][x] == player && table[y-2][x] == player && table[y-3][x] == player) {
+                return true;
             }
-            
-            if (player == lastSlot) {
-                count++
-                if (count == 4) break;
-            } else {
-                count = 1;
-            }
-            
-            lastSlot = temp;
         }
-        
-        
-        if (count == 4) {
-            alert("Win");
-        }    
     }
 };
 
+var newGame = function() {
+    $('[data-row]').css('background-color', 'white');
+    reset();
+    player1 = true;
+};
+
+var reset = function() {
+  for (var x = 0; x < 6; x++) {
+      for (var y = 0; y <= 5; y++) {
+          if (table[y][x] !== 0) {
+                  table[y][x] = 0;
+              }
+      }
+  }
+  return table;
+}

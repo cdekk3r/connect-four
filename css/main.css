@@ -24,3 +24,7 @@ td {
 /*#board tr:first-child td:hover {*/
 /*    background-color: #b1d3b2;*/
 /*}*/
+
+button {
+  margin-left: 48%;
+}
